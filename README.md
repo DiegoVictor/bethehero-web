@@ -7,7 +7,7 @@
 ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?style=flat-square)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/bethehero/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
-This web version allow NGOs to register yourself and manage its incidents. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/bethehero/tree/master/api).
+This web version allow NGOs to register yourself and manage its incidents. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/bethehero-api).
 
 ## Table of Contents
 * [Screenshots](#screenshots)
@@ -24,10 +24,10 @@ This web version allow NGOs to register yourself and manage its incidents. All t
 
 # Screenshots
 Click to expand.<br>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero/master/web/screenshots/register.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero/master/web/screenshots/logon.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero/master/web/screenshots/incidents.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero/master/web/screenshots/create.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/register.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/logon.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/incidents.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/create.png" width="49%"/>
 
 # Installing
 Easy peasy lemon squeezy:
@@ -41,7 +41,7 @@ $ npm install
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 ## Configuring
-Configure your environment variables and remember to start the [API](https://github.com/DiegoVictor/bethehero/tree/master/api) before to start this app.
+Configure your environment variables and remember to start the [API](https://github.com/DiegoVictor/bethehero-api) before to start this app.
 
 ### .env
 In this file you may configure the API's url. Rename the `.env.example` in the root directory to `.env` then just update with your settings.
@@ -51,7 +51,7 @@ key|description|default
 REACT_APP_API_URL|API's url with version (v1)|`http://localhost:3333/v1`
 
 ### API
-Start the [API](https://github.com/DiegoVictor/bethehero/tree/master/api) (see its README for more information). In case of any change in the API's `port` or `host` remember to update the [`.env`](#env) too.
+Start the [API](https://github.com/DiegoVictor/bethehero-api) (see its README for more information). In case of any change in the API's `port` or `host` remember to update the [`.env`](#env) too.
 
 
 # Usage
