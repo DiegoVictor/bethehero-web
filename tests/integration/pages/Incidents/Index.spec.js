@@ -25,7 +25,9 @@ describe('Incidents/Index', () => {
 
   it('should be able to retrieve a list of incidents', async () => {
     const incidents = await factory.attrsMany('Incident', 3);
-    api_mock.onGet(`/ngos/${ngo.id}/incidents`).reply(200, incidents);
+    api_mock
+      .onGet(`/ngos/${ngo.id}/incidents`)
+      .reply(200, incidents, { Link: 'rel="last"' });
 
     let getByText;
     let getByTestId;
