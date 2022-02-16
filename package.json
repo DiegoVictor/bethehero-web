@@ -24,35 +24,6 @@
     "coverage": "react-app-rewired test --coverage --watchAll=false",
     "eject": "react-scripts eject"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "^~/(.*)": "<rootDir>/src/$1"
-    },
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ],
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-dom/extend-expect"
-    ],
-    "coverageDirectory": "tests/coverage",
-    "roots": [
-      "<rootDir>/src/",
-      "<rootDir>/tests/"
-    ],
-    "testMatch": [
-      "**/tests/**/*.spec.js"
-    ],
-    "collectCoverageFrom": [
-      "!src/*",
-      "!src/styles/*",
-      "!src/routes/*",
-      "!src/contexts/*",
-      "!src/config/*",
-      "!src/components/Button/*",
-      "!src/components/Layout/*",
-      "!src/components/Link/*"
-    ]
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
