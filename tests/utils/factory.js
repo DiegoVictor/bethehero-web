@@ -5,7 +5,7 @@ factory.define(
   'Ngo',
   {},
   {
-    id: faker.random.number,
+    id: faker.datatype.number,
     name: faker.name.findName,
     email: faker.internet.email,
     whatsapp: () => faker.phone.phoneNumber('###########'),
@@ -18,7 +18,7 @@ factory.define(
   'Incident',
   {},
   {
-    id: faker.random.number,
+    id: faker.datatype.number,
     title: faker.name.title,
     description: faker.lorem.paragraph,
     value: () => Number(faker.finance.amount()),
