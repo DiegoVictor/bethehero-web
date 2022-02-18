@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useInfiniteScroll } from 'react-infinite-scroll-hook';
 
@@ -18,7 +18,7 @@ export default () => {
     setNgo,
   } = useContext(NgoContext);
   const [incidents, setIncidents] = useState([]);
-  const history = useHistory();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [reached_end, setReachedEnd] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -32,8 +32,8 @@ export default () => {
   const handleLogout = useCallback(() => {
     localStorage.removeItem('bethehero');
     setNgo({});
-    history.push('/');
-  }, [history, setNgo]);
+    navigate('/');
+  }, [navigate, setNgo]);
 
   const handleDeleteIncident = useCallback(
     async (incident_id) => {

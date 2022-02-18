@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 
@@ -13,7 +13,7 @@ import { Container, Form, Section } from './styles';
 import api from '~/services/api';
 
 export default () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const form_ref = useRef(null);
 
   const handleRegister = useCallback(
@@ -49,7 +49,7 @@ export default () => {
 
         toast.success(`ONG cadastrada com sucesso, ID: ${data.id}`);
 
-        history.push('/');
+        navigate('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const validation_errors = {};
@@ -62,7 +62,7 @@ export default () => {
         }
       }
     },
-    [history]
+    [navigate]
   );
 
   return (
