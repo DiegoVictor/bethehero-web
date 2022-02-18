@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import NgoContext from '~/contexts/Ngo';
 import { setAuthorization } from '~/services/api';
 
-import Route from '~/routes/Route';
+import PrivateRoute from '~/routes/PrivateRoute';
 import Login from '~/pages/Login';
 import Register from '~/pages/Register';
 import Incidents from '~/pages/Incidents/Index';
 import IncidentCreate from '~/pages/Incidents/Create';
+import IfAuthenticatedRedirect from './IfAuthenticatedRedirect';
 
 export default () => {
   const [ngo, setNgo] = useState({});
@@ -37,11 +38,37 @@ export default () => {
       }}
     >
       <BrowserRouter>
-        <Route path="/" guest exact component={Login} />
-        <Route path="/register" guest component={Register} />
+        <Routes>
+          <Route
+            path="/"
+            index
+            element={
+              <IfAuthenticatedRedirect>
+                <Login />
+              </IfAuthenticatedRedirect>
+            }
+          />
+          <Route path="/register" element={<Register />} />
 
-        <Route path="/incidents" exact privated component={Incidents} />
-        <Route path="/incidents/create" privated component={IncidentCreate} />
+          <Route
+            path="/incidents"
+            privated
+            element={
+              <PrivateRoute>
+                <Incidents />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/incidents/create"
+            privated
+            element={
+              <PrivateRoute>
+                <IncidentCreate />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
       </BrowserRouter>
     </NgoContext.Provider>
   );
