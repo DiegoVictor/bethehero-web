@@ -12,20 +12,30 @@ import Login from '~/pages/Login';
 
 jest.mock('react-toastify');
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('Login', () => {
-  const api_mock = new MockAdapter(api);
+  const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
   const setNgo = jest.fn();
-  const id = faker.random.number();
+  const id = faker.datatype.number();
   const name = faker.name.findName();
   const token = faker.random.alphaNumeric(16);
 
   it('should be able to login', async () => {
-    api_mock.onPost('sessions').reply(200, { ngo: { id, name }, token });
+    apiMock.onPost('sessions').reply(200, { ngo: { id, name }, token });
+
+    const setItem = jest.spyOn(localStorage, 'setItem');
 
     const { getByTestId, getByPlaceholderText } = render(
       <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router history={history}>
+        <Router location={history.location} navigator={history}>
           <Login />
         </Router>
       </NgoContext.Provider>
@@ -37,19 +47,20 @@ describe('Login', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    expect(localStorage.getItem('bethehero')).toBe(
+    expect(setItem).toHaveBeenCalledWith(
+      'bethehero',
       JSON.stringify({ id, name, token })
     );
     expect(setNgo).toHaveBeenCalledWith({ id, name, token });
   });
 
   it('should not be able to login', async () => {
-    api_mock.onPost('sessions').reply(400);
+    apiMock.onPost('sessions').reply(400);
     toast.error = jest.fn();
 
     const { getByTestId, getByPlaceholderText } = render(
       <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router history={history}>
+        <Router location={history.location} navigator={history}>
           <Login />
         </Router>
       </NgoContext.Provider>
@@ -69,7 +80,7 @@ describe('Login', () => {
   it('should form validation fail', async () => {
     const { getByTestId, getByText } = render(
       <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router history={history}>
+        <Router location={history.location} navigator={history}>
           <Login />
         </Router>
       </NgoContext.Provider>
@@ -85,7 +96,7 @@ describe('Login', () => {
   it('should be able to navigate to register page', () => {
     const { getByTestId } = render(
       <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router history={history}>
+        <Router location={history.location} navigator={history}>
           <Login />
         </Router>
       </NgoContext.Provider>

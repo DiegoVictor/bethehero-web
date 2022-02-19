@@ -11,13 +11,21 @@ import Create from '~/pages/Incidents/Create';
 
 jest.mock('react-toastify');
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('Incidents/Create', () => {
-  const api_mock = new MockAdapter(api);
+  const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
 
   it('should be able to back to incidents page', () => {
     const { getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Create />
       </Router>
     );
@@ -29,11 +37,11 @@ describe('Incidents/Create', () => {
 
   it('should be able to create an incident', async () => {
     const { title, description, value } = await factory.attrs('Incident');
-    api_mock.onPost('incidents').reply(200);
+    apiMock.onPost('incidents').reply(200);
     toast.success = jest.fn();
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Create />
       </Router>
     );
@@ -53,16 +61,16 @@ describe('Incidents/Create', () => {
     });
 
     expect(toast.success).toHaveBeenCalledWith('Caso cadastrado com sucesso!');
-    expect(history.location.pathname).toBe('/incidents');
+    expect(mockNavigate).toHaveBeenCalledWith('/incidents');
   });
 
   it('should not be able to create an incident', async () => {
     const { title, description, value } = await factory.attrs('Incident');
-    api_mock.onPost('incidents').reply(400);
+    apiMock.onPost('incidents').reply(400);
     toast.error = jest.fn();
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Create />
       </Router>
     );
@@ -84,12 +92,12 @@ describe('Incidents/Create', () => {
     expect(toast.error).toHaveBeenCalledWith(
       'Erro ao cadastrar caso, tente novamente!'
     );
-    expect(history.location.pathname).toBe('/incidents');
+    expect(mockNavigate).not.toHaveBeenCalledWith('/incidents');
   });
 
   it('should form fail in validation', async () => {
     const { getByTestId, getByText } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Create />
       </Router>
     );

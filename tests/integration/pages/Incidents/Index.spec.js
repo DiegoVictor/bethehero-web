@@ -13,10 +13,18 @@ import Index from '~/pages/Incidents/Index';
 
 jest.mock('react-toastify');
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('Incidents/Index', () => {
   const api_mock = new MockAdapter(api);
   const history = createBrowserHistory();
-  const ngo = { id: faker.random.number(), name: faker.name.findName() };
+  const ngo = { id: faker.datatype.number(), name: faker.name.findName() };
   const setNgo = jest.fn();
 
   beforeEach(() => {
@@ -34,7 +42,7 @@ describe('Incidents/Index', () => {
     await act(async () => {
       const component = render(
         <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router history={history}>
+          <Router location={history.location} navigator={history}>
             <Index />
           </Router>
         </NgoContext.Provider>
@@ -74,7 +82,7 @@ describe('Incidents/Index', () => {
     await act(async () => {
       const component = render(
         <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router history={history}>
+          <Router location={history.location} navigator={history}>
             <Index />
           </Router>
         </NgoContext.Provider>
@@ -121,7 +129,7 @@ describe('Incidents/Index', () => {
     await act(async () => {
       const component = render(
         <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router history={history}>
+          <Router location={history.location} navigator={history}>
             <Index />
           </Router>
         </NgoContext.Provider>
@@ -151,7 +159,7 @@ describe('Incidents/Index', () => {
     await act(async () => {
       const component = render(
         <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router history={history}>
+          <Router location={history.location} navigator={history}>
             <Index />
           </Router>
         </NgoContext.Provider>
@@ -176,7 +184,7 @@ describe('Incidents/Index', () => {
     await act(async () => {
       const component = render(
         <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router history={history}>
+          <Router location={history.location} navigator={history}>
             <Index />
           </Router>
         </NgoContext.Provider>
@@ -187,7 +195,7 @@ describe('Incidents/Index', () => {
 
     fireEvent.click(getByTestId('logout'));
 
-    expect(history.location.pathname).toBe('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/');
     expect(localStorage.getItem('bethehero')).toBeFalsy();
   });
 });

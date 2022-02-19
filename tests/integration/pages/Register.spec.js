@@ -11,19 +11,27 @@ import Register from '~/pages/Register';
 
 jest.mock('react-toastify');
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+  return {
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe('Register', () => {
-  const api_mock = new MockAdapter(api);
+  const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
 
   it('should be able to register', async () => {
     const { id, name, email, whatsapp, city, state } = await factory.attrs(
       'Ngo'
     );
-    api_mock.onPost('ngos').reply(200, { id });
+    apiMock.onPost('ngos').reply(200, { id });
     toast.success = jest.fn();
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Register />
       </Router>
     );
@@ -51,16 +59,16 @@ describe('Register', () => {
     expect(toast.success).toHaveBeenCalledWith(
       `ONG cadastrada com sucesso, ID: ${id}`
     );
-    expect(history.location.pathname).toBe('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 
   it('should not be able to register', async () => {
     const { name, email, whatsapp, city, state } = await factory.attrs('Ngo');
-    api_mock.onPost('ngos').reply(400);
+    apiMock.onPost('ngos').reply(400);
     toast.error = jest.fn();
 
     const { getByPlaceholderText, getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Register />
       </Router>
     );
@@ -92,7 +100,7 @@ describe('Register', () => {
 
   it('should form fail in validation', async () => {
     const { getByTestId, getByText } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Register />
       </Router>
     );
@@ -112,7 +120,7 @@ describe('Register', () => {
 
   it('should be able to navigate to login page', () => {
     const { getByTestId } = render(
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Register />
       </Router>
     );
