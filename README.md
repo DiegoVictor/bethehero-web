@@ -1,5 +1,5 @@
 # [Web] Be The Hero
-[![Travis (.org)](https://img.shields.io/travis/DiegoVictor/bethehero-web?logo=travis&style=flat-square)](https://travis-ci.org/DiegoVictor/bethehero-web)
+[![Travis (.com)](https://img.shields.io/travis/com/diegovictor/bethehero-web?logo=travis&style=flat-square)](https://app.travis-ci.com/DiegoVictor/bethehero-web)
 [![react](https://img.shields.io/badge/reactjs-17.0.2-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
 [![styled-components](https://img.shields.io/badge/styled_components-5.3.3-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
 [![eslint](https://img.shields.io/badge/eslint-8.8.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
