@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router, Routes, Route } from 'react-router-dom';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import PrivateRoute from '~/routes/PrivateRoute';

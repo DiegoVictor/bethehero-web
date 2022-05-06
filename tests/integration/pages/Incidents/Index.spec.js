@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
