@@ -6,7 +6,7 @@
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![jest](https://img.shields.io/badge/jest-27.5.1-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/bethehero-web?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/bethehero-web)
-[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/bethehero-web/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
 This web version allow NGOs to register yourself and manage its incidents. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/bethehero-api).
 
@@ -25,10 +25,10 @@ This web version allow NGOs to register yourself and manage its incidents. All t
 
 # Screenshots
 Click to expand.<br>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/register.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/logon.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/incidents.png" width="49%"/>
-<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/master/screenshots/create.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/main/screenshots/register.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/main/screenshots/logon.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/main/screenshots/incidents.png" width="49%"/>
+<img src="https://raw.githubusercontent.com/DiegoVictor/bethehero-web/main/screenshots/create.png" width="49%"/>
 
 # Installing
 Easy peasy lemon squeezy:
