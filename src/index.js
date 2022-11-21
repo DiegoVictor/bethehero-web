@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { toast, Flip } from 'react-toastify';
 
 import Navigation from './routes';
@@ -10,9 +10,10 @@ toast.configure({
   closeOnClick: false,
 });
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'));
+
+root.render(
   <React.StrictMode>
     <Navigation />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
