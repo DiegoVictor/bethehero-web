@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import MockAdapter from 'axios-mock-adapter';
 import { createBrowserHistory } from 'history';
 import { toast } from 'react-toastify';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
@@ -25,7 +25,7 @@ describe('Login', () => {
   const history = createBrowserHistory();
   const setNgo = jest.fn();
   const id = faker.datatype.number();
-  const name = faker.name.findName();
+  const name = faker.name.fullName();
   const token = faker.random.alphaNumeric(16);
 
   it('should be able to login', async () => {

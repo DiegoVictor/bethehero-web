@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 import { Form } from '@unform/web';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import Input from '~/components/Input';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router, Routes, Route } from 'react-router-dom';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import PrivateRoute from '~/routes/PrivateRoute';
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('Route', () => {
-  const name = faker.name.findName();
+  const name = faker.name.fullName();
   const token = faker.random.alphaNumeric(16);
 
   it('should redirect when not authenticated and request a privated page', () => {

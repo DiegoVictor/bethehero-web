@@ -4,7 +4,7 @@ import { Router } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
@@ -24,7 +24,7 @@ jest.mock('react-router-dom', () => {
 describe('Incidents/Index', () => {
   const api_mock = new MockAdapter(api);
   const history = createBrowserHistory();
-  const ngo = { id: faker.datatype.number(), name: faker.name.findName() };
+  const ngo = { id: faker.datatype.number(), name: faker.name.fullName() };
   const setNgo = jest.fn();
 
   beforeEach(() => {

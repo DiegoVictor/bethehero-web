@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import factory from 'factory-girl';
 
 factory.define(
@@ -6,9 +6,9 @@ factory.define(
   {},
   {
     id: faker.datatype.number,
-    name: faker.name.findName,
+    name: faker.name.fullName,
     email: faker.internet.email,
-    whatsapp: () => faker.phone.phoneNumber('###########'),
+    whatsapp: () => faker.phone.number('###########'),
     city: faker.address.city,
     state: faker.address.stateAbbr,
   }
@@ -19,7 +19,7 @@ factory.define(
   {},
   {
     id: faker.datatype.number,
-    title: faker.name.title,
+    title: () => faker.lorem.words(3),
     description: faker.lorem.paragraph,
     value: () => Number(faker.finance.amount()),
   }
