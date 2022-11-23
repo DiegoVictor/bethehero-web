@@ -14,7 +14,7 @@ import api from '~/services/api';
 
 function Register() {
   const navigate = useNavigate();
-  const form_ref = useRef(null);
+  const formRef = useRef(null);
 
   const handleRegister = useCallback(
     async ({ name, email, whatsapp, city, state }) => {
@@ -52,11 +52,12 @@ function Register() {
         navigate('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const validation_errors = {};
+          const validationErrors = {};
           err.inner.forEach((error) => {
-            validation_errors[error.path] = error.message;
+            validationErrors[error.path] = error.message;
           });
-          form_ref.current.setErrors(validation_errors);
+
+          formRef.current.setErrors(validationErrors);
         } else {
           toast.error('Erro ao cadastrar ONG, tente novamente!');
         }
@@ -82,7 +83,7 @@ function Register() {
             </Link>
           </Section>
 
-          <Form ref={form_ref} onSubmit={handleRegister}>
+          <Form ref={formRef} onSubmit={handleRegister}>
             <Input name="name" placeholder="Nome da ONG" />
             <Input name="email" type="email" placeholder="Email" />
             <Input name="whatsapp" placeholder="WhatsApp" />

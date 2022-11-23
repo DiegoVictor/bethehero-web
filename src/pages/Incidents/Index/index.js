@@ -20,7 +20,7 @@ function IncidentsList() {
   const [incidents, setIncidents] = useState([]);
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const [reached_end, setReachedEnd] = useState(false);
+  const [reachedEnd, setReachedEnd] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const hasNextPage = useCallback((headers) => {
@@ -50,10 +50,10 @@ function IncidentsList() {
     [incidents]
   );
 
-  const scroll_ref = useInfiniteScroll(
+  const scrollRef = useInfiniteScroll(
     {
       loading,
-      hasNextPage: !reached_end,
+      hasNextPage: !reachedEnd,
       onLoadMore: async () => {
         setLoading(true);
 
@@ -100,7 +100,7 @@ function IncidentsList() {
 
         <h1>Casos</h1>
 
-        <Incidents ref={scroll_ref}>
+        <Incidents ref={scrollRef}>
           {incidents.map((incident) => (
             <li key={String(incident.id)}>
               <strong>Caso:</strong>

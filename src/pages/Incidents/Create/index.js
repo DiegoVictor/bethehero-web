@@ -14,7 +14,7 @@ import { Container, Form, Section } from './styles';
 
 function IncidentCreate() {
   const navigate = useNavigate();
-  const form_ref = useRef(null);
+  const formRef = useRef(null);
 
   const handleCreate = useCallback(
     async ({ title, description, value }) => {
@@ -37,11 +37,11 @@ function IncidentCreate() {
         navigate('/incidents');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const validation_errors = {};
+          const validationErrors = {};
           err.inner.forEach((error) => {
-            validation_errors[error.path] = error.message;
+            validationErrors[error.path] = error.message;
           });
-          form_ref.current.setErrors(validation_errors);
+          formRef.current.setErrors(validationErrors);
         } else {
           toast.error('Erro ao cadastrar caso, tente novamente!');
         }
@@ -67,7 +67,7 @@ function IncidentCreate() {
             </Link>
           </Section>
 
-          <Form ref={form_ref} onSubmit={handleCreate}>
+          <Form ref={formRef} onSubmit={handleCreate}>
             <Input name="title" placeholder="Título do caso" />
             <Input type="textarea" name="description" placeholder="Descrição" />
             <Input

@@ -14,7 +14,7 @@ import api from '~/services/api';
 import { Container, Form } from './styles';
 
 function Login() {
-  const form_ref = useRef(null);
+  const formRef = useRef(null);
   const { setNgo } = useContext(NgoContext);
 
   const handleLogin = useCallback(
@@ -38,11 +38,12 @@ function Login() {
         setNgo({ id: ngo.id, name: ngo.name, token });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
-          const validation_errors = {};
+          const validationErrors = {};
           err.inner.forEach((error) => {
-            validation_errors[error.path] = error.message;
+            validationErrors[error.path] = error.message;
           });
-          form_ref.current.setErrors(validation_errors);
+
+          formRef.current.setErrors(validationErrors);
         } else {
           toast.error('Usuário e/ou senha incorreto(s)!');
         }
@@ -56,7 +57,7 @@ function Login() {
       <Container>
         <section>
           <img src={Logo} alt="Be The Hero" />
-          <Form ref={form_ref} onSubmit={handleLogin}>
+          <Form ref={formRef} onSubmit={handleLogin}>
             <h1>Faça seu logon</h1>
 
             <Input name="id" placeholder="Seu ID" />
