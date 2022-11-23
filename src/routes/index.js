@@ -11,7 +11,7 @@ import Incidents from '~/pages/Incidents/Index';
 import IncidentCreate from '~/pages/Incidents/Create';
 import IfAuthenticatedRedirect from './IfAuthenticatedRedirect';
 
-export default () => {
+function Routes() {
   const [ngo, setNgo] = useState({});
 
   useEffect(() => {
@@ -72,4 +72,6 @@ export default () => {
       </BrowserRouter>
     </NgoContext.Provider>
   );
-};
+}
+
+export default Routes;

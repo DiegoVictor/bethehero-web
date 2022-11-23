@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Container, ErrorMessage } from './styles';
 
-export default function Input({ name, type, placeholder, ...rest }) {
+function Input({ name, type, placeholder, ...rest }) {
   const inputRef = useRef(null);
   const { fieldName, defaultValue = '', registerField, error } = useField(name);
 
@@ -47,3 +47,5 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
 };
+
+export default Input;

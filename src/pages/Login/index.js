@@ -13,7 +13,7 @@ import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
 import { Container, Form } from './styles';
 
-export default () => {
+function Login() {
   const form_ref = useRef(null);
   const { setNgo } = useContext(NgoContext);
 
@@ -74,4 +74,6 @@ export default () => {
       </Container>
     </Layout>
   );
-};
+}
+
+export default Login;

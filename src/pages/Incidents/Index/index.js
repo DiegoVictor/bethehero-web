@@ -12,7 +12,7 @@ import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
 import { Container, Incidents, Header } from './styles';
 
-export default () => {
+function IncidentsList() {
   const {
     ngo: { id, name },
     setNgo,
@@ -129,4 +129,6 @@ export default () => {
       </Container>
     </Layout>
   );
-};
+}
+
+export default IncidentsList;

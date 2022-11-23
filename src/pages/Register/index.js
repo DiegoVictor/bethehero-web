@@ -12,7 +12,7 @@ import Link from '~/components/Link';
 import { Container, Form, Section } from './styles';
 import api from '~/services/api';
 
-export default () => {
+function Register() {
   const navigate = useNavigate();
   const form_ref = useRef(null);
 
@@ -100,4 +100,6 @@ export default () => {
       </Container>
     </Layout>
   );
-};
+}
+
+export default Register;

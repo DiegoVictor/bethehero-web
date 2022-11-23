@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import NgoContext from '~/contexts/Ngo';
 
-export default function PrivateRoute({ children }) {
+function PrivateRoute({ children }) {
   const { ngo } = useContext(NgoContext);
 
   if (!ngo.token) {
@@ -17,3 +17,5 @@ export default function PrivateRoute({ children }) {
 PrivateRoute.propTypes = {
   children: PropTypes.element.isRequired,
 };
+
+export default PrivateRoute;

@@ -12,7 +12,7 @@ import Link from '~/components/Link';
 import api from '~/services/api';
 import { Container, Form, Section } from './styles';
 
-export default () => {
+function IncidentCreate() {
   const navigate = useNavigate();
   const form_ref = useRef(null);
 
@@ -86,4 +86,6 @@ export default () => {
       </Container>
     </Layout>
   );
-};
+}
+
+export default IncidentCreate;
