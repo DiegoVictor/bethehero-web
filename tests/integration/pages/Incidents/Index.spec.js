@@ -22,18 +22,18 @@ jest.mock('react-router-dom', () => {
 });
 
 describe('Incidents/Index', () => {
-  const api_mock = new MockAdapter(api);
+  const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
   const ngo = { id: faker.datatype.number(), name: faker.name.fullName() };
   const setNgo = jest.fn();
 
   beforeEach(() => {
-    api_mock.reset();
+    apiMock.reset();
   });
 
   it('should be able to retrieve a list of incidents', async () => {
     const incidents = await factory.attrsMany('Incident', 3);
-    api_mock
+    apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
       .reply(200, incidents, { Link: 'rel="last"' });
 
@@ -71,7 +71,7 @@ describe('Incidents/Index', () => {
     jest.useFakeTimers();
 
     const incidents = await factory.attrsMany('Incident', 10);
-    api_mock
+    apiMock
       .onGet(`/ngos/${ngo.id}/incidents`, { params: { page: 1 } })
       .reply(200, incidents.slice(0, 5))
       .onGet(`/ngos/${ngo.id}/incidents`, { params: { page: 2 } })
@@ -119,7 +119,7 @@ describe('Incidents/Index', () => {
     const incident = await factory.attrs('Incident');
     toast.success = jest.fn();
 
-    api_mock
+    apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
       .reply(200, [incident])
       .onDelete(`/incidents/${incident.id}`)
@@ -149,7 +149,7 @@ describe('Incidents/Index', () => {
     const incident = await factory.attrs('Incident');
     toast.error = jest.fn();
 
-    api_mock
+    apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
       .reply(200, [incident])
       .onDelete(`/incidents/${incident.id}`)
@@ -178,7 +178,7 @@ describe('Incidents/Index', () => {
   });
 
   it('should be able to logout', async () => {
-    api_mock.onGet(`/ngos/${ngo.id}/incidents`).reply(200, []);
+    apiMock.onGet(`/ngos/${ngo.id}/incidents`).reply(200, []);
 
     let getByTestId;
     await act(async () => {
