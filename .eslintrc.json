@@ -7,8 +7,7 @@
   "extends": [
     "plugin:react/recommended",
     "airbnb",
-    "prettier",
-    "prettier/react"
+    "plugin:prettier/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -24,11 +23,9 @@
   },
   "plugins": [
     "react",
-    "prettier",
     "react-hooks"
   ],
   "rules": {
-    "prettier/prettier": "error",
     "react/jsx-filename-extension": [
       "error",
       {
@@ -43,12 +40,5 @@
     "react-hooks/exhaustive-deps": "warn",
     "react/jsx-props-no-spreading": "off",
     "camelcase": "off"
-  },
-  "settings": {
-    "import/resolver": {
-      "babel-plugin-root-import": {
-        "rootPathSuffix": "src"
-      }
-    }
   }
 }
