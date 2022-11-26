@@ -2,14 +2,8 @@ import React, { useCallback, useRef } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-
 import { toast } from 'react-toastify';
-import Logo from '~/assets/logo.svg';
-import Button from '~/components/Button';
-import Input from '~/components/Input';
-import Layout from '~/components/Layout';
-import Link from '~/components/Link';
-import api from '~/services/api';
+
 import { Container, Form, Section } from './styles';
 
 function IncidentCreate() {
