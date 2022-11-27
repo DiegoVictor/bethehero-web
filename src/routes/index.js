@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   BrowserRouter,
   Routes as BrowserRoutes,
@@ -32,13 +33,16 @@ export default () => {
     }
   }, [ngo]);
 
+  const context = useMemo(
+    () => ({
+      ngo,
+      setNgo,
+    }),
+    [ngo, setNgo]
+  );
+
   return (
-    <NgoContext.Provider
-      value={{
-        ngo,
-        setNgo,
-      }}
-    >
+    <NgoContext.Provider value={context}>
       <BrowserRouter>
         <BrowserRoutes>
           <Route
