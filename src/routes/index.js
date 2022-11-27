@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes as BrowserRoutes,
+  Route,
+} from 'react-router-dom';
 
 import NgoContext from '../contexts/Ngo';
 import { setAuthorization } from '../services/api';
@@ -37,7 +40,7 @@ export default () => {
       }}
     >
       <BrowserRouter>
-        <Routes>
+        <BrowserRoutes>
           <Route
             path="/"
             index
@@ -67,7 +70,7 @@ export default () => {
               </PrivateRoute>
             }
           />
-        </Routes>
+        </BrowserRoutes>
       </BrowserRouter>
     </NgoContext.Provider>
   );
