@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useInfiniteScroll } from 'react-infinite-scroll-hook';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
 import Logo from '../../../assets/logo.svg';
 import Button from '../../../components/Button';
@@ -50,21 +50,22 @@ function IncidentsList() {
     [incidents]
   );
 
-  const scrollRef = useInfiniteScroll(
+  const [scrollRef] = useInfiniteScroll(
     {
       loading,
       hasNextPage: !reachedEnd,
       onLoadMore: async () => {
-        setLoading(true);
+        if (!loading) {
+          setLoading(true);
+          setPage(page + 1);
+          const { data, headers } = await api.get(`/ngos/${id}/incidents`, {
+            params: { page: page + 1 },
+          });
 
-        setPage(page + 1);
-        const { data, headers } = await api.get(`/ngos/${id}/incidents`, {
-          params: { page: page + 1 },
-        });
-
-        setIncidents([...incidents, ...data]);
-        hasNextPage(headers);
-        setLoading(false);
+          setIncidents([...incidents, ...data]);
+          hasNextPage(headers);
+          setLoading(false);
+        }
       },
     },
     [id]
@@ -100,9 +101,9 @@ function IncidentsList() {
 
         <h1>Casos</h1>
 
-        <Incidents ref={scrollRef}>
+        <Incidents>
           {incidents.map((incident) => (
-            <li key={String(incident.id)}>
+            <li key={String(incident.id)} ref={scrollRef}>
               <strong>Caso:</strong>
               <p>{incident.title}</p>
               <strong>Descrição:</strong>
@@ -125,6 +126,7 @@ function IncidentsList() {
               </button>
             </li>
           ))}
+          {(loading || hasNextPage) && <div ref={scrollRef} />}
         </Incidents>
       </Container>
     </Layout>
