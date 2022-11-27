@@ -18,6 +18,17 @@ jest.mock('react-router-dom', () => {
   };
 });
 
+jest.mock('react-infinite-scroll-hook', () => {
+  // eslint-disable-next-line global-require
+  const { useRef } = require('react');
+  return {
+    __esModule: true,
+    default: function useInfiniteScroll() {
+      return [useRef()];
+    },
+  };
+});
+
 describe('Route', () => {
   const name = faker.name.fullName();
   const token = faker.random.alphaNumeric(16);

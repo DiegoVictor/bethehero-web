@@ -8,8 +8,8 @@ import { faker } from '@faker-js/faker';
 
 import NgoContext from '~/contexts/Ngo';
 import api from '~/services/api';
-import factory from '../../../utils/factory';
 import Index from '~/pages/Incidents/Index';
+import factory from '../../../utils/factory';
 
 jest.mock('react-toastify');
 
@@ -18,6 +18,20 @@ jest.mock('react-router-dom', () => {
   return {
     ...jest.requireActual('react-router-dom'),
     useNavigate: () => mockNavigate,
+  };
+});
+
+let mockLoadMore = jest.fn();
+jest.mock('react-infinite-scroll-hook', () => {
+  // eslint-disable-next-line global-require
+  const { useRef } = require('react');
+  return {
+    __esModule: true,
+    default: function useInfiniteScroll({ onLoadMore }) {
+      mockLoadMore = onLoadMore;
+
+      return [useRef()];
+    },
   };
 });
 
@@ -94,6 +108,10 @@ describe('Incidents/Index', () => {
 
     fireEvent.scroll(window, {
       target: { scrollY: 100 },
+    });
+
+    await act(async () => {
+      await mockLoadMore();
     });
 
     await act(async () => {
