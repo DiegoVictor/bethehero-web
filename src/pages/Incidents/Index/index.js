@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 
-import Logo from '../../../assets/logo.svg';
-import Button from '../../../components/Button';
-import Layout from '../../../components/Layout';
-import Link from '../../../components/Link';
-import NgoContext from '../../../contexts/Ngo';
-import api from '../../../services/api';
+import Logo from 'assets/logo.svg';
+import Button from 'components/Button';
+import Layout from 'components/Layout';
+import Link from 'components/Link';
+import NgoContext from 'contexts/Ngo';
+import api from 'services/api';
 import { Container, Incidents, Header } from './styles';
 
 function IncidentsList() {

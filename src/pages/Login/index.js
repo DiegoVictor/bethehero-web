@@ -3,14 +3,14 @@ import { FiPlusSquare } from 'react-icons/fi';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 
-import Heroes from '../../assets/heroes.png';
-import Logo from '../../assets/logo.svg';
-import Button from '../../components/Button';
-import Input from '../../components/Input';
-import Layout from '../../components/Layout';
-import Link from '../../components/Link';
-import NgoContext from '../../contexts/Ngo';
-import api from '../../services/api';
+import Heroes from 'assets/heroes.png';
+import Logo from 'assets/logo.svg';
+import Button from 'components/Button';
+import Input from 'components/Input';
+import Layout from 'components/Layout';
+import Link from 'components/Link';
+import NgoContext from 'contexts/Ngo';
+import api from 'services/api';
 import { Container, Form } from './styles';
 
 function Login() {

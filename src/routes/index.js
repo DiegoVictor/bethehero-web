@@ -5,13 +5,13 @@ import {
   Route,
 } from 'react-router-dom';
 
-import NgoContext from '../contexts/Ngo';
-import { setAuthorization } from '../services/api';
+import NgoContext from 'contexts/Ngo';
+import { setAuthorization } from 'services/api';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
+import Incidents from 'pages/Incidents/Index';
+import IncidentCreate from 'pages/Incidents/Create';
 import PrivateRoute from './PrivateRoute';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import Incidents from '../pages/Incidents/Index';
-import IncidentCreate from '../pages/Incidents/Create';
 import IfAuthenticatedRedirect from './IfAuthenticatedRedirect';
 
 function Routes() {

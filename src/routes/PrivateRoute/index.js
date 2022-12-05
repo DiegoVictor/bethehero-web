@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import NgoContext from '../../contexts/Ngo';
+import NgoContext from 'contexts/Ngo';
 
 function PrivateRoute({ children }) {
   const { ngo } = useContext(NgoContext);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import Navigation from './routes';
+import Navigation from 'routes';
 
 const root = createRoot(document.getElementById('root'));
 
