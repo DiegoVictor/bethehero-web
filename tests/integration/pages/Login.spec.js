@@ -6,9 +6,9 @@ import { createBrowserHistory } from 'history';
 import { toast } from 'react-toastify';
 import { faker } from '@faker-js/faker';
 
-import NgoContext from '~/contexts/Ngo';
-import api from '~/services/api';
-import Login from '~/pages/Login';
+import NgoContext from '../../../src/contexts/Ngo';
+import api from '../../../src/services/api';
+import Login from '../../../src/pages/Login';
 
 jest.mock('react-toastify');
 

@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react';
 import { Form } from '@unform/web';
 import { faker } from '@faker-js/faker';
 
-import Input from '~/components/Input';
+import Input from '../../src/components/Input';
 
 describe('Input', () => {
   it('should be able to render a textarea', () => {

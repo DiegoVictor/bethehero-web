@@ -5,9 +5,9 @@ import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
-import api from '~/services/api';
+import api from '../../../../src/services/api';
+import Create from '../../../../src/pages/Incidents/Create';
 import factory from '../../../utils/factory';
-import Create from '~/pages/Incidents/Create';
 
 jest.mock('react-toastify');
 

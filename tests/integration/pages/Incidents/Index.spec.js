@@ -6,9 +6,9 @@ import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
 import { faker } from '@faker-js/faker';
 
-import NgoContext from '~/contexts/Ngo';
-import api from '~/services/api';
-import Index from '~/pages/Incidents/Index';
+import NgoContext from '../../../../src/contexts/Ngo';
+import api from '../../../../src/services/api';
+import Index from '../../../../src/pages/Incidents/Index';
 import factory from '../../../utils/factory';
 
 jest.mock('react-toastify');

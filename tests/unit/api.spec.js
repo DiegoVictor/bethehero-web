@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import api, { setAuthorization } from '~/services/api';
+import api, { setAuthorization } from '../../src/services/api';
 
 describe('Api', () => {
   it('should be able to set a default header', () => {

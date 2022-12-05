@@ -4,11 +4,11 @@ import { createBrowserHistory } from 'history';
 import { Router, Routes, Route } from 'react-router-dom';
 import { faker } from '@faker-js/faker';
 
-import NgoContext from '~/contexts/Ngo';
-import PrivateRoute from '~/routes/PrivateRoute';
-import Incidents from '~/pages/Incidents/Index';
-import IfAuthenticatedRedirect from '~/routes/IfAuthenticatedRedirect';
-import Login from '~/pages/Login';
+import NgoContext from '../../../src/contexts/Ngo';
+import PrivateRoute from '../../../src/routes/PrivateRoute';
+import Incidents from '../../../src/pages/Incidents/Index';
+import IfAuthenticatedRedirect from '../../../src/routes/IfAuthenticatedRedirect';
+import Login from '../../../src/pages/Login';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
