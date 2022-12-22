@@ -1453,10 +1453,10 @@
     "schema-utils" "^3.0.0"
     "source-map" "^0.7.3"
 
-"@remix-run/router@1.0.4":
-  "integrity" "sha512-gTL8H5USTAKOyVA4xczzDJnC3HMssdFa3tRlwBicXynx9XfiXwneHnYQogwSKpdCkjXISrEKSTtX62rLpNEVQg=="
-  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.0.4.tgz"
-  "version" "1.0.4"
+"@remix-run/router@1.1.0":
+  "integrity" "sha512-rGl+jH/7x1KBCQScz9p54p0dtPLNeKGb3e0wD2H5/oZj41bwQUnXdzbj2TbUAFhvD7cp9EyEQA4dEgpUFa1O7Q=="
+  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.1.0.tgz"
+  "version" "1.1.0"
 
 "@rollup/plugin-babel@^5.2.0":
   "integrity" "sha512-9uIC8HZOnVLrLHxayq/PTzw+uS25E14KPUBh5ktF+18Mjo5yK0ToMMx6epY0uEgkjwJw0aBW4x2horYXh8juWw=="
@@ -1849,10 +1849,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@^29.2.3":
-  "integrity" "sha512-6XwoEbmatfyoCjWRX7z0fKMmgYKe9+/HrviJ5k0X/tjJWHGAezZOfYaxqQKuzG/TvQyr+ktjm4jgbk0s4/oF2w=="
-  "resolved" "https://registry.npmjs.org/@types/jest/-/jest-29.2.3.tgz"
-  "version" "29.2.3"
+"@types/jest@*", "@types/jest@^29.2.4":
+  "integrity" "sha512-PipFB04k2qTRPePduVLTRiPzQfvMeLwUN3Z21hsAKaB/W9IIzgB2pizCL466ftJlcyZqnHoC9ZHpxLGl3fS86A=="
+  "resolved" "https://registry.npmjs.org/@types/jest/-/jest-29.2.4.tgz"
+  "version" "29.2.4"
   dependencies:
     "expect" "^29.0.0"
     "pretty-format" "^29.0.0"
@@ -2105,14 +2105,14 @@
     "@typescript-eslint/types" "5.44.0"
     "eslint-visitor-keys" "^3.3.0"
 
-"@unform/core@^2.0.0", "@unform/core@2.1.6":
+"@unform/core@^2.1.6", "@unform/core@2.1.6":
   "integrity" "sha512-coz9rOS1Y+0zygxTTQB+hY1HJ5ee0A40KBdIy/1IdaiFGT5LhZhCWqMorFh8KcqY3J+SInrpGDMmJYObsjEW9w=="
   "resolved" "https://registry.npmjs.org/@unform/core/-/core-2.1.6.tgz"
   "version" "2.1.6"
   dependencies:
     "dot-object" "^2.1.4"
 
-"@unform/web@^2.0.0":
+"@unform/web@^2.1.6":
   "integrity" "sha512-EawnCaIYcF7UwbRmYn9k+KQBCkrH5nQjd5IGQL3rKZ7tSQNADenfuPUuBmRFE3mOBcIiIUgcYl0PMK5XFj5zFA=="
   "resolved" "https://registry.npmjs.org/@unform/web/-/web-2.1.6.tgz"
   "version" "2.1.6"
@@ -5557,10 +5557,10 @@
     "jest-get-type" "^27.5.1"
     "pretty-format" "^27.5.1"
 
-"jest-localstorage-mock@^2.4.22":
-  "integrity" "sha512-60PWSDFQOS5v7JzSmYLM3dPLg0JLl+2Vc4lIEz/rj2yrXJzegsFLn7anwc5IL0WzJbBa/Las064CHbFg491/DQ=="
-  "resolved" "https://registry.npmjs.org/jest-localstorage-mock/-/jest-localstorage-mock-2.4.22.tgz"
-  "version" "2.4.22"
+"jest-localstorage-mock@^2.4.25":
+  "integrity" "sha512-VdQ8PTpNzUJDx/KY3hBrTwxqVMzMS+LccngC15EZSFdxJ+VeeCYmyW7BSzubk9FUKCVeXPjYPibzXe6swXYA+g=="
+  "resolved" "https://registry.npmjs.org/jest-localstorage-mock/-/jest-localstorage-mock-2.4.25.tgz"
+  "version" "2.4.25"
 
 "jest-matcher-utils@^27.5.1":
   "integrity" "sha512-z2uTx/T6LBaCoNWNFWwChLBKYxTMcGBRjAt+2SbP929/Fflb9aa5LGma654Rz8z9HLxsrUaYzxE9T/EFIL/PAw=="
@@ -7279,10 +7279,10 @@
   dependencies:
     "fast-diff" "^1.1.2"
 
-"prettier@^2.8.0", "prettier@>=2.0.0":
-  "integrity" "sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA=="
-  "resolved" "https://registry.npmjs.org/prettier/-/prettier-2.8.0.tgz"
-  "version" "2.8.0"
+"prettier@^2.8.1", "prettier@>=2.0.0":
+  "integrity" "sha512-lqGoSJBQNJidqCHE80vqZJHWHRFoNYsSpP9AjFhlhi9ODCJA541svILes/+/1GM3VaL/abZi7cpFzOpdR9UPKg=="
+  "resolved" "https://registry.npmjs.org/prettier/-/prettier-2.8.1.tgz"
+  "version" "2.8.1"
 
 "pretty-bytes@^5.3.0", "pretty-bytes@^5.4.1":
   "integrity" "sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg=="
@@ -7513,20 +7513,20 @@
   "resolved" "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz"
   "version" "0.11.0"
 
-"react-router-dom@^6.4.4":
-  "integrity" "sha512-0Axverhw5d+4SBhLqLpzPhNkmv7gahUwlUVIOrRLGJ4/uwt30JVajVJXqv2Qr/LCwyvHhQc7YyK1Do8a9Jj7qA=="
-  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.4.4.tgz"
-  "version" "6.4.4"
+"react-router-dom@^6.5.0":
+  "integrity" "sha512-/XzRc5fq80gW1ctiIGilyKFZC/j4kfe75uivMsTChFbkvrK4ZrF3P3cGIc1f/SSkQ4JiJozPrf+AwUHHWVehVg=="
+  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.5.0.tgz"
+  "version" "6.5.0"
   dependencies:
-    "@remix-run/router" "1.0.4"
-    "react-router" "6.4.4"
+    "@remix-run/router" "1.1.0"
+    "react-router" "6.5.0"
 
-"react-router@6.4.4":
-  "integrity" "sha512-SA6tSrUCRfuLWeYsTJDuriRqfFIsrSvuH7SqAJHegx9ZgxadE119rU8oOX/rG5FYEthpdEaEljdjDlnBxvfr+Q=="
-  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.4.4.tgz"
-  "version" "6.4.4"
+"react-router@6.5.0":
+  "integrity" "sha512-fqqUSU0NC0tSX0sZbyuxzuAzvGqbjiZItBQnyicWlOUmzhAU8YuLgRbaCL2hf3sJdtRy4LP/WBrWtARkMvdGPQ=="
+  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.5.0.tgz"
+  "version" "6.5.0"
   dependencies:
-    "@remix-run/router" "1.0.4"
+    "@remix-run/router" "1.1.0"
 
 "react-scripts@^5.0.1":
   "integrity" "sha512-8VAmEm/ZAwQzJ+GOMLbBsTdDKOpuZh7RPs0UymvBR2vRk4iZWCskjbFnxqjrzoIvlNNRZ3QJFx6/qDSi6zSnaQ=="
