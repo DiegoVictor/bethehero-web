@@ -4,7 +4,6 @@ environment:
   REACT_APP_API_URL: http://localhost:3333/v1
 install:
   - sh: npm ci
-build: off
 test_script:
   - sh: npm run test
 on_success:
