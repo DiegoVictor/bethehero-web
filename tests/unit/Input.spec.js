@@ -7,7 +7,7 @@ import Input from '../../src/components/Input';
 
 describe('Input', () => {
   it('should be able to render a textarea', () => {
-    const placeholder = faker.random.words(3);
+    const placeholder = faker.lorem.words(3);
     const { getByPlaceholderText } = render(
       <Form>
         <Input name="description" type="textarea" placeholder={placeholder} />
@@ -19,7 +19,7 @@ describe('Input', () => {
   });
 
   it('should be able to render an input', () => {
-    const placeholder = faker.random.words(3);
+    const placeholder = faker.lorem.words(3);
     const { getByPlaceholderText } = render(
       <Form>
         <Input name="name" placeholder={placeholder} />
@@ -31,12 +31,12 @@ describe('Input', () => {
   });
 
   it('should be able to render a input error', async () => {
-    const error = faker.random.words(5);
+    const error = faker.lorem.words(5);
     const ref = React.createRef();
 
     const { getByText } = render(
       <Form ref={ref}>
-        <Input name="name" placeholder={faker.random.words(3)} />
+        <Input name="name" placeholder={faker.lorem.words(3)} />
       </Form>
     );
 

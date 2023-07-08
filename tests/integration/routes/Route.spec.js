@@ -30,8 +30,8 @@ jest.mock('react-infinite-scroll-hook', () => {
 });
 
 describe('Route', () => {
-  const name = faker.name.fullName();
-  const token = faker.random.alphaNumeric(16);
+  const name = faker.person.fullName();
+  const token = faker.string.alphanumeric(16);
 
   it('should redirect when not authenticated and request a privated page', () => {
     const history = createBrowserHistory();

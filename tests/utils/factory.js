@@ -5,12 +5,12 @@ factory.define(
   'Ngo',
   {},
   {
-    id: faker.datatype.number,
-    name: faker.name.fullName,
+    id: faker.number.int,
+    name: faker.person.fullName,
     email: faker.internet.email,
     whatsapp: () => faker.phone.number('###########'),
-    city: faker.address.city,
-    state: faker.address.stateAbbr,
+    city: faker.location.city,
+    state: faker.location.state({ abbreviated: true }),
   }
 );
 
@@ -18,7 +18,7 @@ factory.define(
   'Incident',
   {},
   {
-    id: faker.datatype.number,
+    id: faker.number.int,
     title: () => faker.lorem.words(3),
     description: faker.lorem.paragraph,
     value: () => Number(faker.finance.amount()),

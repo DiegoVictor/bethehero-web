@@ -24,9 +24,9 @@ describe('Login', () => {
   const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
   const setNgo = jest.fn();
-  const id = faker.datatype.number();
-  const name = faker.name.fullName();
-  const token = faker.random.alphaNumeric(16);
+  const id = faker.number.int();
+  const name = faker.person.fullName();
+  const token = faker.string.alphanumeric(16);
 
   it('should be able to login', async () => {
     apiMock.onPost('sessions').reply(200, { ngo: { id, name }, token });

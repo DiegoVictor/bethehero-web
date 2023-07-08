@@ -4,7 +4,7 @@ import api, { setAuthorization } from '../../src/services/api';
 
 describe('Api', () => {
   it('should be able to set a default header', () => {
-    const token = faker.random.alphaNumeric(16);
+    const token = faker.string.alphanumeric(16);
 
     setAuthorization(token);
 
