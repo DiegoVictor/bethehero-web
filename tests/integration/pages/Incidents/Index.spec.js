@@ -38,7 +38,7 @@ jest.mock('react-infinite-scroll-hook', () => {
 describe('Incidents/Index', () => {
   const apiMock = new MockAdapter(api);
   const history = createBrowserHistory();
-  const ngo = { id: faker.datatype.number(), name: faker.name.fullName() };
+  const ngo = { id: faker.number.int(), name: faker.person.fullName() };
   const setNgo = jest.fn();
 
   beforeEach(() => {
