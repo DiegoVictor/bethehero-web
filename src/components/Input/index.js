@@ -11,8 +11,16 @@ function Input({ name, type, placeholder, ...rest }) {
   useEffect(() => {
     registerField({
       name: fieldName,
-      ref: inputRef.current,
-      path: 'value',
+      ref: inputRef,
+      getValue: (ref) => {
+        return ref.current.value;
+      },
+      setValue: (ref, value) => {
+        ref.current.value = value;
+      },
+      clearValue: (ref) => {
+        ref.current.value = '';
+      },
     });
   }, [fieldName, registerField]);
 
