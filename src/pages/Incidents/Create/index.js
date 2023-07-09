@@ -16,39 +16,39 @@ function IncidentCreate() {
   const navigate = useNavigate();
   const formRef = useRef(null);
 
-  const handleCreate = useCallback(
-    async ({ title, description, value }) => {
-      try {
-        const schema = Yup.object().shape({
-          title: Yup.string().min(3).required('O título é obrigatório'),
-          description: Yup.string()
-            .min(10, 'A descrição deve conter pelo menos 10 caracteres')
-            .required('A descrição é obrigatória'),
-          value: Yup.string().required('O valor é obrigatório'),
+  const handleCreate = useCallback(async ({ title, description, value }) => {
+    try {
+      const schema = Yup.object().shape({
+        title: Yup.string().min(3).required('O título é obrigatório'),
+        description: Yup.string()
+          .min(10, 'A descrição deve conter pelo menos 10 caracteres')
+          .required('A descrição é obrigatória'),
+        value: Yup.string().required('O valor é obrigatório'),
+      });
+
+      await schema.validate(
+        { title, description, value },
+        { abortEarly: false }
+      );
+
+      await api.post('incidents', { title, description, value });
+      toast.success('Caso cadastrado com sucesso!');
+
+      navigate('/incidents');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
         });
 
-        await schema.validate(
-          { title, description, value },
-          { abortEarly: false }
-        );
-        await api.post('incidents', { title, description, value });
-        toast.success('Caso cadastrado com sucesso!');
-
-        navigate('/incidents');
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const validationErrors = {};
-          err.inner.forEach((error) => {
-            validationErrors[error.path] = error.message;
-          });
-          formRef.current.setErrors(validationErrors);
-        } else {
-          toast.error('Erro ao cadastrar caso, tente novamente!');
-        }
+        formRef.current.setErrors(validationErrors);
+      } else {
+        toast.error('Erro ao cadastrar caso, tente novamente!');
       }
-    },
-    [navigate]
-  );
+    }
+  }, []);
 
   return (
     <Layout>
@@ -78,7 +78,13 @@ function IncidentCreate() {
               placeholder="Valor em reais"
             />
 
-            <Button data-testid="submit" type="submit">
+            <Button
+              data-testid="submit"
+              type="submit"
+              onClick={() => {
+                formRef.current.submitForm();
+              }}
+            >
               Cadastrar
             </Button>
           </Form>
