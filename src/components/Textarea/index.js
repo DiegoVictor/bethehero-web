@@ -6,7 +6,7 @@ import { Container, ErrorMessage } from './styles';
 function Input({ name, error, type, placeholder, ...rest }) {
   return (
     <Container {...rest}>
-      <input name={name} type={type} placeholder={placeholder} />
+      <textarea name={name} type={type} placeholder={placeholder} />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
   );
