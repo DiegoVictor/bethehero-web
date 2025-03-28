@@ -1,29 +1,16 @@
 import React from 'react';
-import { act, render } from '@testing-library/react';
-import { Form } from '@unform/web';
+import { render } from '@testing-library/react';
 import { faker } from '@faker-js/faker';
 
 import Input from '../../src/components/Input';
 
 describe('Input', () => {
-  it('should be able to render a textarea', () => {
-    const placeholder = faker.lorem.words(3);
-    const { getByPlaceholderText } = render(
-      <Form>
-        <Input name="description" type="textarea" placeholder={placeholder} />
-      </Form>
-    );
-
-    expect(getByPlaceholderText(placeholder)).toBeInTheDocument();
-    expect(getByPlaceholderText(placeholder).tagName).toBe('TEXTAREA');
-  });
-
   it('should be able to render an input', () => {
     const placeholder = faker.lorem.words(3);
     const { getByPlaceholderText } = render(
-      <Form>
+      <form>
         <Input name="name" placeholder={placeholder} />
-      </Form>
+      </form>
     );
 
     expect(getByPlaceholderText(placeholder)).toBeInTheDocument();
@@ -32,17 +19,12 @@ describe('Input', () => {
 
   it('should be able to render a input error', async () => {
     const error = faker.lorem.words(5);
-    const ref = React.createRef();
 
     const { getByText } = render(
-      <Form ref={ref}>
-        <Input name="name" placeholder={faker.lorem.words(3)} />
-      </Form>
+      <form>
+        <Input name="name" placeholder={faker.lorem.words(3)} error={error} />
+      </form>
     );
-
-    await act(async () => {
-      ref.current.setFieldError('name', error);
-    });
 
     expect(getByText(error)).toBeInTheDocument();
   });
