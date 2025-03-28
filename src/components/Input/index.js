@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 
 import { Container, ErrorMessage } from './styles';
 
-function Input({ name, error, type, placeholder, ...rest }) {
+function Input({ name, min, step, error, type, placeholder, ...rest }) {
   return (
     <Container {...rest}>
-      <input name={name} type={type} placeholder={placeholder} />
+      <input
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        min={min}
+        step={step}
+      />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
   );
@@ -17,12 +23,16 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   type: PropTypes.string,
   error: PropTypes.string,
+  min: PropTypes.string,
+  step: PropTypes.string,
 };
 
 Input.defaultProps = {
   type: 'text',
   placeholder: '',
   error: '',
+  min: '1',
+  step: '0.01',
 };
 
 export default Input;
