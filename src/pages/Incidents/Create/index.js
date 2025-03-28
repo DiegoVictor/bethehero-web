@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import Logo from 'assets/logo.svg';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import Textarea from 'components/Textarea';
 import Layout from 'components/Layout';
 import Link from 'components/Link';
 import api from 'services/api';
@@ -75,24 +76,27 @@ function IncidentCreate() {
             </Link>
           </Section>
 
-          <Form ref={formRef} onSubmit={handleCreate}>
-            <Input name="title" placeholder="Título do caso" />
-            <Input type="textarea" name="description" placeholder="Descrição" />
+          <Form onSubmit={handleCreate}>
+            <Input
+              name="title"
+              placeholder="Título do caso"
+              error={errors.title}
+            />
+            <Textarea
+              name="description"
+              placeholder="Descrição"
+              error={errors.description}
+            />
             <Input
               name="value"
               type="number"
               min="1"
               step="0.01"
               placeholder="Valor em reais"
+              error={errors.value}
             />
 
-            <Button
-              data-testid="submit"
-              type="submit"
-              onClick={() => {
-                formRef.current.submitForm();
-              }}
-            >
+            <Button data-testid="submit" type="submit">
               Cadastrar
             </Button>
           </Form>
