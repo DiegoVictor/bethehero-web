@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -22,7 +22,17 @@ const schema = Yup.object().shape({
 
 function IncidentCreate() {
   const navigate = useNavigate();
-  const formRef = useRef(null);
+  const [errors, setErrors] = useState({});
+
+  const handleCreate = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const { title, description, value } = Object.fromEntries(
+        formData.entries()
+      );
 
       await schema.validate(
         { title, description, value },
@@ -41,12 +51,12 @@ function IncidentCreate() {
           validationErrors[error.path] = error.message;
         });
 
-        formRef.current.setErrors(validationErrors);
+        setErrors(validationErrors);
       } else {
         toast.error('Erro ao cadastrar caso, tente novamente!');
       }
     }
-  }, []);
+  };
 
   return (
     <Layout>
