@@ -10,8 +10,7 @@ function Input({ name, min, step, error, type, placeholder, ...rest }) {
         name={name}
         type={type}
         placeholder={placeholder}
-        min={min}
-        step={step}
+        {...{ min, step }}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </Container>
@@ -31,8 +30,8 @@ Input.defaultProps = {
   type: 'text',
   placeholder: '',
   error: '',
-  min: '1',
-  step: '0.01',
+  min: null,
+  step: null,
 };
 
 export default Input;
