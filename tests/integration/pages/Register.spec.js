@@ -3,32 +3,43 @@ import { render, fireEvent, act } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
-import { toast } from 'react-toastify';
 
 import api from '../../../src/services/api';
 import Register from '../../../src/pages/Register';
 import factory from '../../utils/factory';
 
-jest.mock('react-toastify');
+const mockSuccess = jest.fn();
+const mockError = jest.fn();
+jest.mock('react-toastify', () => {
+  return {
+    ...jest.requireActual('react-toastify'),
+    toast: {
+      success: (message) => mockSuccess(message),
+      error: (message) => mockError(message),
+    },
+  };
+});
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   return {
     ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate,
+    useNavigate: () => mockNavigate(),
   };
 });
 
-describe('Register', () => {
-  const apiMock = new MockAdapter(api);
-  const history = createBrowserHistory();
+const apiMock = new MockAdapter(api);
+const history = createBrowserHistory();
 
+describe('Register', () => {
   it('should be able to register', async () => {
-    const { id, name, email, whatsapp, city, state } = await factory.attrs(
-      'Ngo'
-    );
+    const { id, name, email, whatsapp, city, state } =
+      await factory.attrs('Ngo');
+
     apiMock.onPost('ngos').reply(200, { id });
-    toast.success = jest.fn();
+
+    const navigate = jest.fn();
+    mockNavigate.mockReturnValueOnce(navigate);
 
     const { getByPlaceholderText, getByTestId } = render(
       <Router location={history.location} navigator={history}>
@@ -43,7 +54,7 @@ describe('Register', () => {
       target: { value: email },
     });
     fireEvent.change(getByPlaceholderText('WhatsApp'), {
-      target: { value: whatsapp },
+      target: { value: whatsapp.substring(0, 10) },
     });
     fireEvent.change(getByPlaceholderText('Cidade'), {
       target: { value: city },
@@ -56,16 +67,16 @@ describe('Register', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    expect(toast.success).toHaveBeenCalledWith(
+    expect(mockSuccess).toHaveBeenCalledWith(
       `ONG cadastrada com sucesso, ID: ${id}`
     );
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(navigate).toHaveBeenCalledWith('/');
   });
 
   it('should not be able to register', async () => {
     const { name, email, whatsapp, city, state } = await factory.attrs('Ngo');
+
     apiMock.onPost('ngos').reply(400);
-    toast.error = jest.fn();
 
     const { getByPlaceholderText, getByTestId } = render(
       <Router location={history.location} navigator={history}>
@@ -80,7 +91,7 @@ describe('Register', () => {
       target: { value: email },
     });
     fireEvent.change(getByPlaceholderText('WhatsApp'), {
-      target: { value: whatsapp },
+      target: { value: whatsapp.substring(0, 10) },
     });
     fireEvent.change(getByPlaceholderText('Cidade'), {
       target: { value: city },
@@ -93,7 +104,7 @@ describe('Register', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    expect(toast.error).toHaveBeenCalledWith(
+    expect(mockError).toHaveBeenCalledWith(
       'Erro ao cadastrar ONG, tente novamente!'
     );
   });
