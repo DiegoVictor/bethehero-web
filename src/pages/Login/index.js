@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useContext, useState } from 'react';
 import { FiPlusSquare } from 'react-icons/fi';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
@@ -13,54 +13,57 @@ import NgoContext from 'contexts/Ngo';
 import api from 'services/api';
 import { Container, Form } from './styles';
 
-function Login() {
-  const formRef = useRef(null);
-  const { setNgo } = useContext(NgoContext);
+const schema = Yup.object().shape({
+  id: Yup.string().required('Por favor, informe o id da ONG'),
+});
 
-  const handleLogin = useCallback(
-    async ({ id }) => {
-      try {
-        const schema = Yup.object().shape({
-          id: Yup.string().required('Por favor, informe o id da ONG'),
+function Login() {
+  const { setNgo } = useContext(NgoContext);
+  const [errors, setErrors] = useState({});
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const { id } = Object.fromEntries(formData.entries());
+
+      await schema.validate({ id }, { abortEarly: false });
+
+      const {
+        data: { ngo, token },
+      } = await api.post('sessions', { id });
+
+      localStorage.setItem(
+        'bethehero',
+        JSON.stringify({ id: ngo.id, name: ngo.name, token })
+      );
+
+      setNgo({ id: ngo.id, name: ngo.name, token });
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
         });
 
-        await schema.validate({ id }, { abortEarly: false });
-
-        const {
-          data: { ngo, token },
-        } = await api.post('sessions', { id });
-
-        localStorage.setItem(
-          'bethehero',
-          JSON.stringify({ id: ngo.id, name: ngo.name, token })
-        );
-
-        setNgo({ id: ngo.id, name: ngo.name, token });
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const validationErrors = {};
-          err.inner.forEach((error) => {
-            validationErrors[error.path] = error.message;
-          });
-
-          formRef.current.setErrors(validationErrors);
-        } else {
-          toast.error('Usuário e/ou senha incorreto(s)!');
-        }
+        setErrors(validationErrors);
+      } else {
+        toast.error('Usuário e/ou senha incorreto(s)!');
       }
-    },
-    [setNgo]
-  );
+    }
+  };
 
   return (
     <Layout>
       <Container>
         <section>
           <img src={Logo} alt="Be The Hero" />
-          <Form ref={formRef} onSubmit={handleLogin}>
+          <Form method="post" onSubmit={handleLogin}>
             <h1>Faça seu logon</h1>
 
-            <Input name="id" placeholder="Seu ID" />
+            <Input name="id" placeholder="Seu ID" error={errors.id} />
             <Button data-testid="submit" type="submit">
               Entrar
             </Button>
