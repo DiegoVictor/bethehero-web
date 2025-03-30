@@ -3,26 +3,35 @@ import { act, render, fireEvent } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import MockAdapter from 'axios-mock-adapter';
-import { toast } from 'react-toastify';
 
 import api from '../../../../src/services/api';
 import Create from '../../../../src/pages/Incidents/Create';
 import factory from '../../../utils/factory';
 
-jest.mock('react-toastify');
+const mockSuccess = jest.fn();
+const mockError = jest.fn();
+jest.mock('react-toastify', () => {
+  return {
+    ...jest.requireActual('react-toastify'),
+    toast: {
+      success: (message) => mockSuccess(message),
+      error: (message) => mockError(message),
+    },
+  };
+});
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   return {
     ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate,
+    useNavigate: () => mockNavigate(),
   };
 });
 
-describe('Incidents/Create', () => {
-  const apiMock = new MockAdapter(api);
-  const history = createBrowserHistory();
+const apiMock = new MockAdapter(api);
+const history = createBrowserHistory();
 
+describe('Incidents/Create', () => {
   it('should be able to back to incidents page', () => {
     const { getByTestId } = render(
       <Router location={history.location} navigator={history}>
@@ -37,8 +46,11 @@ describe('Incidents/Create', () => {
 
   it('should be able to create an incident', async () => {
     const { title, description, value } = await factory.attrs('Incident');
+
     apiMock.onPost('incidents').reply(200);
-    toast.success = jest.fn();
+
+    const navigate = jest.fn();
+    mockNavigate.mockReturnValueOnce(navigate);
 
     const { getByPlaceholderText, getByTestId } = render(
       <Router location={history.location} navigator={history}>
@@ -60,14 +72,17 @@ describe('Incidents/Create', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    expect(toast.success).toHaveBeenCalledWith('Caso cadastrado com sucesso!');
-    expect(mockNavigate).toHaveBeenCalledWith('/incidents');
+    expect(mockSuccess).toHaveBeenCalledWith('Caso cadastrado com sucesso!');
+    expect(navigate).toHaveBeenCalledWith('/incidents');
   });
 
   it('should not be able to create an incident', async () => {
     const { title, description, value } = await factory.attrs('Incident');
+
     apiMock.onPost('incidents').reply(400);
-    toast.error = jest.fn();
+
+    const navigate = jest.fn();
+    mockNavigate.mockReturnValueOnce(navigate);
 
     const { getByPlaceholderText, getByTestId } = render(
       <Router location={history.location} navigator={history}>
@@ -89,10 +104,10 @@ describe('Incidents/Create', () => {
       fireEvent.click(getByTestId('submit'));
     });
 
-    expect(toast.error).toHaveBeenCalledWith(
+    expect(mockError).toHaveBeenCalledWith(
       'Erro ao cadastrar caso, tente novamente!'
     );
-    expect(mockNavigate).not.toHaveBeenCalledWith('/incidents');
+    expect(navigate).not.toHaveBeenCalledWith('/incidents');
   });
 
   it('should form fail in validation', async () => {
