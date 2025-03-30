@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useState } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
@@ -12,59 +12,64 @@ import Link from 'components/Link';
 import api from 'services/api';
 import { Container, Form, Section } from './styles';
 
+const schema = Yup.object().shape({
+  name: Yup.string().min(3).required('O nome da ONG é obrigatório'),
+  email: Yup.string()
+    .email('Digite um email válido')
+    .required('O email é obrigatório'),
+  whatsapp: Yup.string()
+    .required('O WhatsApp é obrigatório')
+    .min(10, 'Um número válido deve conter pelo menos 10 caracteres')
+    .max(11, 'Um número válido deve conter no máximo 11 caracteres'),
+  city: Yup.string().required('A cidade é obrigatória'),
+  state: Yup.string()
+    .required('O estado é obrigatório')
+    .max(2, 'Digite apenas a UF do estado'),
+});
+
 function Register() {
   const navigate = useNavigate();
-  const formRef = useRef(null);
+  const [errors, setErrors] = useState({});
 
-  const handleRegister = useCallback(
-    async ({ name, email, whatsapp, city, state }) => {
-      try {
-        const schema = Yup.object().shape({
-          name: Yup.string().min(3).required('O nome da ONG é obrigatório'),
-          email: Yup.string()
-            .email('Digite um email válido')
-            .required('O email é obrigatório'),
-          whatsapp: Yup.string()
-            .required('O WhatsApp é obrigatório')
-            .min(10, 'Um número válido deve conter pelo menos 10 caracteres')
-            .max(11, 'Um número válido deve conter no máximo 11 caracteres'),
-          city: Yup.string().required('A cidade é obrigatória'),
-          state: Yup.string()
-            .required('O estado é obrigatório')
-            .max(2, 'Digite apenas a UF do estado'),
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target);
+      const { name, email, whatsapp, city, state } = Object.fromEntries(
+        formData.entries()
+      );
+
+      await schema.validate(
+        { name, email, whatsapp, city, state },
+        { abortEarly: false }
+      );
+
+      const { data } = await api.post('ngos', {
+        name,
+        email,
+        whatsapp,
+        city,
+        uf: state,
+      });
+
+      toast.success(`ONG cadastrada com sucesso, ID: ${data.id}`);
+
+      navigate('/');
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors = {};
+        err.inner.forEach((error) => {
+          validationErrors[error.path] = error.message;
         });
 
-        await schema.validate(
-          { name, email, whatsapp, city, state },
-          { abortEarly: false }
-        );
-
-        const { data } = await api.post('ngos', {
-          name,
-          email,
-          whatsapp,
-          city,
-          uf: state,
-        });
-
-        toast.success(`ONG cadastrada com sucesso, ID: ${data.id}`);
-
-        navigate('/');
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const validationErrors = {};
-          err.inner.forEach((error) => {
-            validationErrors[error.path] = error.message;
-          });
-
-          formRef.current.setErrors(validationErrors);
-        } else {
-          toast.error('Erro ao cadastrar ONG, tente novamente!');
-        }
+        setErrors(validationErrors);
+      } else {
+        toast.error('Erro ao cadastrar ONG, tente novamente!');
       }
-    },
-    [navigate]
-  );
+    }
+  };
 
   return (
     <Layout>
@@ -83,14 +88,28 @@ function Register() {
             </Link>
           </Section>
 
-          <Form ref={formRef} onSubmit={handleRegister}>
-            <Input name="name" placeholder="Nome da ONG" />
-            <Input name="email" type="email" placeholder="Email" />
-            <Input name="whatsapp" placeholder="WhatsApp" />
+          <Form method="post" onSubmit={handleSubmit}>
+            <Input name="name" placeholder="Nome da ONG" error={errors.name} />
+            <Input
+              name="email"
+              type="email"
+              placeholder="Email"
+              error={errors.email}
+            />
+            <Input
+              name="whatsapp"
+              placeholder="WhatsApp"
+              error={errors.whatsapp}
+            />
 
             <div>
-              <Input name="city" placeholder="Cidade" />
-              <Input name="state" placeholder="UF" style={{ width: 90 }} />
+              <Input name="city" placeholder="Cidade" error={errors.city} />
+              <Input
+                name="state"
+                placeholder="UF"
+                style={{ width: 90 }}
+                error={errors.state}
+              />
             </div>
 
             <Button data-testid="submit" type="submit">
