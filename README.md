@@ -17,7 +17,6 @@ This web version allow NGOs to register yourself and manage its incidents. All t
     * [.env](#env)
     * [API](#api)
 * [Usage](#usage)
-  * [Reactotron](#reactotron)
   * [Register & Login](#register--login)
   * [localStorage](#localstorage)
 * [Running the tests](#running-the-tests)
@@ -64,10 +63,6 @@ Or:
 ```
 npm run start
 ```
-
-## Reactotron
-The project comes configured with [Reactotron](https://github.com/infinitered/reactotron), after install just open it, then as soon as possible Reactotron will automatically identify new connections.
-> Maybe be necessary refresh the page.
 
 ## Register & Login
 When registering a new NGO notice that after send the form data a success toast message will appers at the right top corner of the screen with the NGO's ID, memorize or note it. At login page just paste the ID in the input and press `ENTER` or click on the button below to login.
