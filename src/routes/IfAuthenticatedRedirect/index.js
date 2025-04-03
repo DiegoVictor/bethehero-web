@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import PropTypes from 'prop-types';
 
 import NgoContext from 'contexts/Ngo';

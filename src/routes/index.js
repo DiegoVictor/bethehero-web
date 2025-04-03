@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import {
-  BrowserRouter,
-  Routes as BrowserRoutes,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter, Routes as BrowserRoutes, Route } from 'react-router';
 
 import NgoContext from 'contexts/Ngo';
 import { setAuthorization } from 'services/api';
