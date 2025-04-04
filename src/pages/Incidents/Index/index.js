@@ -31,6 +31,7 @@ function IncidentsList() {
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('bethehero');
+
     setNgo({});
     navigate('/');
   }, [navigate, setNgo]);
@@ -39,9 +40,11 @@ function IncidentsList() {
     async (incident_id) => {
       try {
         await api.delete(`/incidents/${incident_id}`);
+
         setIncidents(
           incidents.filter((incident) => incident.id !== incident_id)
         );
+
         toast.success('Caso removido com sucesso!');
       } catch (err) {
         toast.error('Erro ao remover caso, tente novamente!');
@@ -76,9 +79,11 @@ function IncidentsList() {
       const { data, headers } = await api.get(`/ngos/${id}/incidents`, {
         params: { page: 1 },
       });
+
       if (headers) {
         hasNextPage(headers);
       }
+
       setIncidents(data);
     })();
   }, [id, hasNextPage]);
