@@ -1,50 +1,59 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { act, render, fireEvent, screen } from '@testing-library/react';
+import { createRoutesStub } from 'react-router';
 import MockAdapter from 'axios-mock-adapter';
-import { createBrowserHistory } from 'history';
-import { toast } from 'react-toastify';
 import { faker } from '@faker-js/faker';
 
 import NgoContext from '../../../src/contexts/Ngo';
 import api from '../../../src/services/api';
 import Login from '../../../src/pages/Login';
 
-jest.mock('react-toastify');
+const apiMock = new MockAdapter(api);
+const setNgo = jest.fn();
+const id = faker.number.int();
+const name = faker.person.fullName();
+const token = faker.string.alphanumeric(16);
 
-const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
+const mockError = jest.fn();
+jest.mock('react-toastify', () => {
   return {
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate,
+    ...jest.requireActual('react-toastify'),
+    toast: {
+      error: (message) => mockError(message),
+    },
   };
 });
 
 describe('Login', () => {
-  const apiMock = new MockAdapter(api);
-  const history = createBrowserHistory();
-  const setNgo = jest.fn();
-  const id = faker.number.int();
-  const name = faker.person.fullName();
-  const token = faker.string.alphanumeric(16);
-
   it('should be able to login', async () => {
     apiMock.onPost('sessions').reply(200, { ngo: { id, name }, token });
 
     const setItem = jest.spyOn(localStorage, 'setItem');
 
-    const { getByTestId, getByPlaceholderText } = render(
-      <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router location={history.location} navigator={history}>
-          <Login />
-        </Router>
-      </NgoContext.Provider>
-    );
+    const context = { ngo: {}, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <NgoContext.Provider value={context}>
+            <Login />
+          </NgoContext.Provider>
+        ),
+      },
+      {
+        path: '/register',
+        Component: () => <div>Register</div>,
+      },
+    ]);
 
-    fireEvent.change(getByPlaceholderText('Seu ID'), { target: { value: id } });
+    render(<Stub initialEntries={['/login']} />);
+
+    fireEvent.change(screen.getByPlaceholderText('Seu ID'), {
+      target: { value: id },
+    });
 
     await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+      fireEvent.click(screen.getByTestId('submit'));
     });
 
     expect(setItem).toHaveBeenCalledWith(
@@ -56,54 +65,85 @@ describe('Login', () => {
 
   it('should not be able to login', async () => {
     apiMock.onPost('sessions').reply(400);
-    toast.error = jest.fn();
 
-    const { getByTestId, getByPlaceholderText } = render(
-      <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router location={history.location} navigator={history}>
-          <Login />
-        </Router>
-      </NgoContext.Provider>
-    );
+    const context = { ngo: {}, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <NgoContext.Provider value={context}>
+            <Login />
+          </NgoContext.Provider>
+        ),
+      },
+      {
+        path: '/register',
+        Component: () => <div>Register</div>,
+      },
+    ]);
 
-    fireEvent.change(getByPlaceholderText('Seu ID'), { target: { value: id } });
+    render(<Stub initialEntries={['/login']} />);
 
-    await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+    fireEvent.change(screen.getByPlaceholderText('Seu ID'), {
+      target: { value: id },
     });
 
-    expect(toast.error).toHaveBeenCalledWith(
-      'Usuário e/ou senha incorreto(s)!'
-    );
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('submit'));
+    });
+
+    expect(mockError).toHaveBeenCalledWith('Usuário e/ou senha incorreto(s)!');
   });
 
   it('should form validation fail', async () => {
-    const { getByTestId, getByText } = render(
-      <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router location={history.location} navigator={history}>
-          <Login />
-        </Router>
-      </NgoContext.Provider>
-    );
+    const context = { ngo: {}, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <NgoContext.Provider value={context}>
+            <Login />
+          </NgoContext.Provider>
+        ),
+      },
+      {
+        path: '/register',
+        Component: () => <div>Register</div>,
+      },
+    ]);
+
+    render(<Stub initialEntries={['/login']} />);
 
     await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+      fireEvent.click(screen.getByTestId('submit'));
     });
 
-    expect(getByText('Por favor, informe o id da ONG')).toBeInTheDocument();
+    expect(
+      screen.getByText('Por favor, informe o id da ONG')
+    ).toBeInTheDocument();
   });
 
   it('should be able to navigate to register page', () => {
-    const { getByTestId } = render(
-      <NgoContext.Provider value={{ ngo: {}, setNgo }}>
-        <Router location={history.location} navigator={history}>
-          <Login />
-        </Router>
-      </NgoContext.Provider>
-    );
+    const context = { ngo: {}, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/login',
+        Component: () => (
+          <NgoContext.Provider value={context}>
+            <Login />
+          </NgoContext.Provider>
+        ),
+        index: true,
+      },
+      {
+        path: '/register',
+        Component: () => <div>Register</div>,
+      },
+    ]);
+    render(<Stub initialEntries={['/login']} />);
 
-    fireEvent.click(getByTestId('register'));
+    fireEvent.click(screen.getByTestId('register'));
 
-    expect(history.location.pathname).toBe('/register');
+    expect(screen.getByText('Register')).toBeInTheDocument();
   });
 });
