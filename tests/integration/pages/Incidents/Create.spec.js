@@ -1,7 +1,6 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { act, render, fireEvent, screen } from '@testing-library/react';
+import { createRoutesStub } from 'react-router';
 import MockAdapter from 'axios-mock-adapter';
 
 import api from '../../../../src/services/api';
@@ -21,27 +20,33 @@ jest.mock('react-toastify', () => {
 });
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
+jest.mock('react-router', () => {
   return {
-    ...jest.requireActual('react-router-dom'),
+    ...jest.requireActual('react-router'),
     useNavigate: () => mockNavigate(),
   };
 });
 
 const apiMock = new MockAdapter(api);
-const history = createBrowserHistory();
 
 describe('Incidents/Create', () => {
   it('should be able to back to incidents page', () => {
-    const { getByTestId } = render(
-      <Router location={history.location} navigator={history}>
-        <Create />
-      </Router>
-    );
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents/create',
+        Component: () => <Create />,
+      },
+      {
+        path: '/incidents',
+        Component: () => <div>Incidents</div>,
+      },
+    ]);
 
-    fireEvent.click(getByTestId('back'));
+    render(<Stub initialEntries={['/incidents/create']} />);
 
-    expect(history.location.pathname).toBe('/incidents');
+    fireEvent.click(screen.getByTestId('back'));
+
+    expect(screen.getByText('Incidents')).toBeInTheDocument();
   });
 
   it('should be able to create an incident', async () => {
@@ -52,24 +57,31 @@ describe('Incidents/Create', () => {
     const navigate = jest.fn();
     mockNavigate.mockReturnValueOnce(navigate);
 
-    const { getByPlaceholderText, getByTestId } = render(
-      <Router location={history.location} navigator={history}>
-        <Create />
-      </Router>
-    );
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents/create',
+        Component: () => <Create />,
+      },
+      {
+        path: '/incidents',
+        Component: () => <div>Incidents</div>,
+      },
+    ]);
 
-    fireEvent.change(getByPlaceholderText('Título do caso'), {
+    render(<Stub initialEntries={['/incidents/create']} />);
+
+    fireEvent.change(screen.getByPlaceholderText('Título do caso'), {
       target: { value: title },
     });
-    fireEvent.change(getByPlaceholderText('Descrição'), {
+    fireEvent.change(screen.getByPlaceholderText('Descrição'), {
       target: { value: description },
     });
-    fireEvent.change(getByPlaceholderText('Valor em reais'), {
+    fireEvent.change(screen.getByPlaceholderText('Valor em reais'), {
       target: { value },
     });
 
     await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+      fireEvent.click(screen.getByTestId('submit'));
     });
 
     expect(mockSuccess).toHaveBeenCalledWith('Caso cadastrado com sucesso!');
@@ -84,45 +96,59 @@ describe('Incidents/Create', () => {
     const navigate = jest.fn();
     mockNavigate.mockReturnValueOnce(navigate);
 
-    const { getByPlaceholderText, getByTestId } = render(
-      <Router location={history.location} navigator={history}>
-        <Create />
-      </Router>
-    );
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents/create',
+        Component: () => <Create />,
+      },
+      {
+        path: '/incidents',
+        Component: () => <div>Incidents</div>,
+      },
+    ]);
 
-    fireEvent.change(getByPlaceholderText('Título do caso'), {
+    render(<Stub initialEntries={['/incidents/create']} />);
+
+    fireEvent.change(screen.getByPlaceholderText('Título do caso'), {
       target: { value: title },
     });
-    fireEvent.change(getByPlaceholderText('Descrição'), {
+    fireEvent.change(screen.getByPlaceholderText('Descrição'), {
       target: { value: description },
     });
-    fireEvent.change(getByPlaceholderText('Valor em reais'), {
+    fireEvent.change(screen.getByPlaceholderText('Valor em reais'), {
       target: { value },
     });
 
     await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+      fireEvent.click(screen.getByTestId('submit'));
     });
 
     expect(mockError).toHaveBeenCalledWith(
       'Erro ao cadastrar caso, tente novamente!'
     );
-    expect(navigate).not.toHaveBeenCalledWith('/incidents');
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it('should form fail in validation', async () => {
-    const { getByTestId, getByText } = render(
-      <Router location={history.location} navigator={history}>
-        <Create />
-      </Router>
-    );
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents/create',
+        Component: () => <Create />,
+      },
+      {
+        path: '/incidents',
+        Component: () => <div>Incidents</div>,
+      },
+    ]);
+
+    render(<Stub initialEntries={['/incidents/create']} />);
 
     await act(async () => {
-      fireEvent.click(getByTestId('submit'));
+      fireEvent.click(screen.getByTestId('submit'));
     });
 
-    expect(getByText('O título é obrigatório')).toBeInTheDocument();
-    expect(getByText('A descrição é obrigatória')).toBeInTheDocument();
-    expect(getByText('O valor é obrigatório')).toBeInTheDocument();
+    expect(screen.getByText('O título é obrigatório')).toBeInTheDocument();
+    expect(screen.getByText('A descrição é obrigatória')).toBeInTheDocument();
+    expect(screen.getByText('O valor é obrigatório')).toBeInTheDocument();
   });
 });
