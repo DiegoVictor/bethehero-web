@@ -1,8 +1,12 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { createBrowserHistory } from 'history';
+import {
+  render,
+  fireEvent,
+  act,
+  screen,
+  waitFor,
+} from '@testing-library/react';
+import { createRoutesStub } from 'react-router';
 import MockAdapter from 'axios-mock-adapter';
 import { faker } from '@faker-js/faker';
 
@@ -11,13 +15,27 @@ import api from '../../../../src/services/api';
 import Index from '../../../../src/pages/Incidents/Index';
 import factory from '../../../utils/factory';
 
-jest.mock('react-toastify');
+const apiMock = new MockAdapter(api);
+const ngo = { id: faker.number.int(), name: faker.person.fullName() };
+const setNgo = jest.fn();
+
+const mockSuccess = jest.fn();
+const mockError = jest.fn();
+jest.mock('react-toastify', () => {
+  return {
+    ...jest.requireActual('react-toastify'),
+    toast: {
+      success: (message) => mockSuccess(message),
+      error: (message) => mockError(message),
+    },
+  };
+});
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => {
+jest.mock('react-router', () => {
   return {
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate,
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockNavigate(),
   };
 });
 
@@ -36,41 +54,43 @@ jest.mock('react-infinite-scroll-hook', () => {
 });
 
 describe('Incidents/Index', () => {
-  const apiMock = new MockAdapter(api);
-  const history = createBrowserHistory();
-  const ngo = { id: faker.number.int(), name: faker.person.fullName() };
-  const setNgo = jest.fn();
-
   beforeEach(() => {
     apiMock.reset();
   });
 
   it('should be able to retrieve a list of incidents', async () => {
     const incidents = await factory.attrsMany('Incident', 3);
+
     apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
       .reply(200, incidents, { Link: 'rel="last"' });
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router location={history.location} navigator={history}>
+    const context = { ngo, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents',
+        Component: () => (
+          <NgoContext.Provider value={context}>
             <Index />
-          </Router>
-        </NgoContext.Provider>
-      );
+          </NgoContext.Provider>
+        ),
+      },
+    ]);
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    render(<Stub initialEntries={['/incidents']} />);
+
+    const [{ title }] = incidents;
+    await waitFor(() => screen.getByText(title));
 
     incidents.forEach((incident) => {
-      expect(getByText(incident.title)).toBeInTheDocument();
-      expect(getByText(incident.description)).toBeInTheDocument();
-      expect(getByTestId(`incident_${incident.id}_value`)).toBeInTheDocument();
-      expect(getByTestId(`incident_${incident.id}_value`).textContent).toBe(
+      expect(screen.getByText(incident.title)).toBeInTheDocument();
+      expect(screen.getByText(incident.description)).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`incident_${incident.id}_value`)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`incident_${incident.id}_value`).textContent
+      ).toBe(
         Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -85,32 +105,34 @@ describe('Incidents/Index', () => {
     jest.useFakeTimers();
 
     const incidents = await factory.attrsMany('Incident', 10);
+
     apiMock
       .onGet(`/ngos/${ngo.id}/incidents`, { params: { page: 1 } })
       .reply(200, incidents.slice(0, 5))
       .onGet(`/ngos/${ngo.id}/incidents`, { params: { page: 2 } })
       .reply(200, incidents.slice(-5), { link: '' });
 
-    let getByText;
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router location={history.location} navigator={history}>
+    const context = { ngo, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents',
+        Component: () => (
+          <NgoContext.Provider value={context}>
             <Index />
-          </Router>
-        </NgoContext.Provider>
-      );
+          </NgoContext.Provider>
+        ),
+      },
+    ]);
 
-      getByText = component.getByText;
-      getByTestId = component.getByTestId;
-    });
+    render(<Stub initialEntries={['/incidents']} />);
 
-    fireEvent.scroll(window, {
-      target: { scrollY: 100 },
-    });
+    const [{ title }] = incidents;
+    await waitFor(() => screen.getByText(title));
 
     await act(async () => {
+      fireEvent.scroll(window, {
+        target: { scrollY: 100 },
+      });
       await mockLoadMore();
     });
 
@@ -119,10 +141,14 @@ describe('Incidents/Index', () => {
     });
 
     incidents.forEach((incident) => {
-      expect(getByText(incident.title)).toBeInTheDocument();
-      expect(getByText(incident.description)).toBeInTheDocument();
-      expect(getByTestId(`incident_${incident.id}_value`)).toBeInTheDocument();
-      expect(getByTestId(`incident_${incident.id}_value`).textContent).toBe(
+      expect(screen.getByText(incident.title)).toBeInTheDocument();
+      expect(screen.getByText(incident.description)).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`incident_${incident.id}_value`)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId(`incident_${incident.id}_value`).textContent
+      ).toBe(
         Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
@@ -135,7 +161,6 @@ describe('Incidents/Index', () => {
 
   it('should be able to delete an incident', async () => {
     const incident = await factory.attrs('Incident');
-    toast.success = jest.fn();
 
     apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
@@ -143,29 +168,31 @@ describe('Incidents/Index', () => {
       .onDelete(`/incidents/${incident.id}`)
       .reply(200);
 
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router location={history.location} navigator={history}>
+    const context = { ngo, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents',
+        Component: () => (
+          <NgoContext.Provider value={context}>
             <Index />
-          </Router>
-        </NgoContext.Provider>
-      );
+          </NgoContext.Provider>
+        ),
+      },
+    ]);
 
-      getByTestId = component.getByTestId;
-    });
+    render(<Stub initialEntries={['/incidents']} />);
+
+    await waitFor(() => screen.getByText(incident.title));
 
     await act(async () => {
-      fireEvent.click(getByTestId(`incident_${incident.id}_delete`));
+      fireEvent.click(screen.getByTestId(`incident_${incident.id}_delete`));
     });
 
-    expect(toast.success).toHaveBeenCalledWith('Caso removido com sucesso!');
+    expect(mockSuccess).toHaveBeenCalledWith('Caso removido com sucesso!');
   });
 
   it('should not be able to delete an incident', async () => {
     const incident = await factory.attrs('Incident');
-    toast.error = jest.fn();
 
     apiMock
       .onGet(`/ngos/${ngo.id}/incidents`)
@@ -173,24 +200,27 @@ describe('Incidents/Index', () => {
       .onDelete(`/incidents/${incident.id}`)
       .reply(400);
 
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router location={history.location} navigator={history}>
+    const context = { ngo, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents',
+        Component: () => (
+          <NgoContext.Provider value={context}>
             <Index />
-          </Router>
-        </NgoContext.Provider>
-      );
+          </NgoContext.Provider>
+        ),
+      },
+    ]);
 
-      getByTestId = component.getByTestId;
-    });
+    render(<Stub initialEntries={['/incidents']} />);
+
+    await waitFor(() => screen.getByText(incident.title));
 
     await act(async () => {
-      fireEvent.click(getByTestId(`incident_${incident.id}_delete`));
+      fireEvent.click(screen.getByTestId(`incident_${incident.id}_delete`));
     });
 
-    expect(toast.error).toHaveBeenCalledWith(
+    expect(mockError).toHaveBeenCalledWith(
       'Erro ao remover caso, tente novamente!'
     );
   });
@@ -198,22 +228,28 @@ describe('Incidents/Index', () => {
   it('should be able to logout', async () => {
     apiMock.onGet(`/ngos/${ngo.id}/incidents`).reply(200, []);
 
-    let getByTestId;
-    await act(async () => {
-      const component = render(
-        <NgoContext.Provider value={{ ngo, setNgo }}>
-          <Router location={history.location} navigator={history}>
-            <Index />
-          </Router>
-        </NgoContext.Provider>
-      );
+    const navigate = jest.fn();
+    mockNavigate.mockReturnValueOnce(navigate);
 
-      getByTestId = component.getByTestId;
+    const context = { ngo, setNgo };
+    const Stub = createRoutesStub([
+      {
+        path: '/incidents',
+        Component: () => (
+          <NgoContext.Provider value={context}>
+            <Index />
+          </NgoContext.Provider>
+        ),
+      },
+    ]);
+
+    render(<Stub initialEntries={['/incidents']} />);
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId('logout'));
     });
 
-    fireEvent.click(getByTestId('logout'));
-
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(navigate).toHaveBeenCalledWith('/');
     expect(localStorage.getItem('bethehero')).toBeFalsy();
   });
 });
